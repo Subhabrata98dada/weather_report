@@ -1,8 +1,8 @@
 package com.qsp.util;
 
-public enum UserType {
+public enum ClientType {
 	Go,PRO,MAX;
-	public static UserType getUserType(int  ordinal) {
+	public static ClientType getUserType(int  ordinal) {
 		switch(ordinal) {
 		case 1:
 			return PRO;

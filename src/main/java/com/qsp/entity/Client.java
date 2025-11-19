@@ -1,7 +1,14 @@
 package com.qsp.entity;
 
-import com.qsp.util.UserType;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+
+import com.qsp.util.ClientType;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -23,7 +30,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @RequiredArgsConstructor
 @Builder
-public class User {
+public class Client {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
@@ -32,10 +39,18 @@ public class User {
 	@NonNull
 	private String phoneNumber;
 	@NonNull
-	private String enamil;
+	@Column(unique = true)
+	private String email;
 	@NonNull
 	@Enumerated(EnumType.STRING)
-	private UserType usertype;
+	private ClientType usertype;
 	@NonNull
 	private Boolean active;
+	
+	@CreatedDate
+	@Column(updatable = false)
+	private LocalDateTime createdon;
+	
+	@LastModifiedDate
+	private LocalDateTime lastupdate;
 }
