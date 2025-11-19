@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.qsp.modelmapper.ResponseEntityMapper;
 import com.qsp.modelmapper.ResponseStructuremodelMapper;
 import com.qsp.responsedto.ResponseStructure;
-import com.qsp.util.UserType;
+import com.qsp.util.ClientType;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -28,7 +28,7 @@ public class UserController {
 	@GetMapping("/registerpre")
 	@Operation(description = "return all user type before add new user")
 	public ResponseEntity<ResponseStructure> userRegistrationPreprocessing() {
-		String[] payload=UserType.getAllTypes();
+		String[] payload=ClientType.getAllTypes();
 		ResponseStructure structure=responseStructuremapper
 				.mapToResponseStructure(HttpStatus.OK,"array",payload);
 		return responseEntityMapper.getResponseEntity(structure,HttpStatus.OK);
