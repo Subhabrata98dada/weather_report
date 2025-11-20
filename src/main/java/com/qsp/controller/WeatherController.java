@@ -87,9 +87,13 @@ public class WeatherController {
 	
 	@GetMapping("/page")
 	@Operation(summary = "get group of data , default first 50 data")
-	public List<WeatherReport> getWeatherpage
+	public ResponseEntity<ResponseStructure> getWeatherpage
 	(@RequestParam(name ="pagenumber" ,required = false,defaultValue ="0") Integer pagenumber,
 	@RequestParam(name = "pagesize",required = false,defaultValue = "25") Integer pagesize){
-		return weatherservice.getWeatherPageService(pagenumber, pagesize);
+		List<WeatherReport> service= weatherservice.getWeatherPageService(pagenumber, pagesize);
+		ResponseStructure structure= responseStructureMapper
+				.mapToResponseStructure(HttpStatus.OK,"array",service);
+		return responseEntityMapper.
+				getResponseEntity(structure,HttpStatus.OK);
 	}
 }

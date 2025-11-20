@@ -7,6 +7,8 @@ import java.util.Random;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import com.qsp.event.ClientSaveEvent;
@@ -28,6 +30,9 @@ public class MailOtpServiceImpliment implements MailOtpService{
 	
 	@Autowired
 	private Random random;
+	
+	@Autowired
+    private JavaMailSender mailSender;
 
 	@Override
 	public String sentOtp(String emailid,ClientSaveDto dto) {
@@ -36,7 +41,12 @@ public class MailOtpServiceImpliment implements MailOtpService{
 			Integer otp=random.nextInt(100000,999999);
 			Object value[]= {dto,otp+"",LocalDateTime.now().plusMinutes(3)};
 			otpholder.put(emailid,value);
-			System.out.println(otp);
+			SimpleMailMessage message = new SimpleMailMessage();
+	        message.setFrom("testsubhabrata736@gmail.com");
+	        message.setTo(emailid);
+	        message.setSubject("OTP");
+	        message.setText("OTP for gmail verification : "+otp);
+	        mailSender.send(message);
 			return "Otp sent to email :"+emailid;
 		} catch (Exception e) {
 			e.printStackTrace();
