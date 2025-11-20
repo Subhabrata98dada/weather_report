@@ -45,7 +45,7 @@ public class WeatherServiceImplement implements WeatherService {
 	}
 
 	@Override
-	@Cacheable(value = "fetch" , key = "#id")
+	@Cacheable(value = "fetch" , key = "#a0")
 	public WeatherSaveDto getWeatherByIdService(Integer id) {
 		Optional<WeatherReport> report=weatherrepo.findById(id);
 		if(report.isEmpty())
@@ -80,7 +80,7 @@ public class WeatherServiceImplement implements WeatherService {
 
 	@Override
 	@Transactional
-	@CacheEvict(value = "fetch",key = "#id")
+	@CacheEvict(value = "fetch",key = "#a0")
 	public String deleteWeatherService(Integer id) {
 		if(!weatherrepo.existsById(id)) return "data not found with id "+id;
 		weatherrepo.deleteById(id);
