@@ -7,7 +7,7 @@ import com.qsp.requestdto.WeatherSaveDto;
 
 @Component
 public class CacheUtil {
-	@CachePut(value = "fetch",key="#id")
+	@CachePut(value = "fetch",key="#a0")
 	public WeatherSaveDto updateCacheWhileUpdateWeather
 	                                      (Integer id,WeatherSaveDto dto) {
 		return dto;
