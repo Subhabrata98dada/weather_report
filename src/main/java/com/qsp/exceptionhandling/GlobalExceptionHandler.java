@@ -29,4 +29,13 @@ public class GlobalExceptionHandler {
 		structure.setStatus(false);
 		return responseEntityMapper.getResponseEntity(structure,HttpStatus.NOT_FOUND);
 	}
+	
+	@ExceptionHandler(AddClientException.class)
+	public ResponseEntity<ResponseStructure> handleAddclientException
+	                                      (AddClientException ex){
+		ResponseStructure structure=reponseStructuremapper
+	    .mapToResponseStructure(HttpStatus.INTERNAL_SERVER_ERROR,"string",ex.getMessage());
+		structure.setStatus(false);
+		return responseEntityMapper.getResponseEntity(structure,HttpStatus.INTERNAL_SERVER_ERROR);
+	}
 }

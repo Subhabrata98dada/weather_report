@@ -7,13 +7,11 @@ import java.util.Optional;
 
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.qsp.entity.WeatherReport;
-import com.qsp.event.SaveWeatherEvent;
 import com.qsp.modelmapper.WeatherMapper;
 import com.qsp.repository.WeatherRepository;
 import com.qsp.requestdto.WeatherReportUpdateRequestDto;
@@ -35,14 +33,14 @@ public class WeatherServiceImplement implements WeatherService {
 	
 	private final CacheUtil cacheutil;
 	
-	private final ApplicationEventPublisher publisher;
+//	private final ApplicationEventPublisher publisher;
 
 	@Override
 	@Transactional
 	public String saveCityWeatherInfoService(WeatherSaveDto dto) {
 		WeatherReport report = weathermapper.saveWeatherDTOtoWeather(dto,new WeatherReport());
 		report=weatherrepo.save(report);
-		publisher.publishEvent(new SaveWeatherEvent(dto.getCity()));
+//		publisher.publishEvent(new SaveWeatherEvent(dto.getCity()));
 		return dto.toString()+" report saved with id :" + report.getId();
 	}
 

@@ -6,8 +6,11 @@ import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
+import com.qsp.event.ClientSaveEvent;
+import com.qsp.exceptionhandling.AddClientException;
 import com.qsp.requestdto.ClientSaveDto;
 import com.qsp.service.MailOtpService;
 
@@ -17,6 +20,9 @@ import com.qsp.service.MailOtpService;
 public class MailOtpServiceImpliment implements MailOtpService{
 	
 	@Autowired
+	private ApplicationEventPublisher publisher;
+	
+	@Autowired
 	@Qualifier("otpholder")
 	private Map<String,Object[]> otpholder;
 	
@@ -24,28 +30,35 @@ public class MailOtpServiceImpliment implements MailOtpService{
 	private Random random;
 
 	@Override
-	public boolean sentOtp(String emailid,ClientSaveDto dto) {
+	public String sentOtp(String emailid,ClientSaveDto dto) {
 		
 		try {
 			Integer otp=random.nextInt(100000,999999);
 			Object value[]= {dto,otp+"",LocalDateTime.now().plusMinutes(3)};
 			otpholder.put(emailid,value);
 			System.out.println(otp);
-			return true;
+			return "Otp sent to email :"+emailid;
 		} catch (Exception e) {
-			throw new RuntimeException("Invalid email id :"+emailid);
+			e.printStackTrace();
+			throw new AddClientException("Invalid email id :"+emailid);
 		}
 	}
 
 	@Override
-	public boolean validateOtp(String emailid, String otp) {
+	public String validateOtp(String emailid, String otp) {
 		Object[] value=otpholder.get(emailid);
 		if(value==null) 
-			throw new RuntimeException("Reregister again");
+			throw new AddClientException("Reregister again");
 		else if(LocalDateTime.now().isAfter((LocalDateTime)value[2]))
-			throw new RuntimeException("Otp expired");
+			throw new AddClientException("Otp expired");
 		String inmemoryotp=(String)value[1];
-		return otp.trim().equals(inmemoryotp);
+		if(otp.trim().equals(inmemoryotp)) {
+			publisher.publishEvent(new ClientSaveEvent(emailid));
+			return "Client saved";
+		}
+		else {
+			throw new AddClientException("Invalid otp");
+		}
 	}
 
 }
