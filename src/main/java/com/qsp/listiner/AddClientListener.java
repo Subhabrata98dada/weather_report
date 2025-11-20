@@ -13,17 +13,20 @@ public class AddClientListener {
 	@Async
 	public void addClient(ClientSaveEvent event) {
 		System.out.println("Client saved "+event.getEmailid());
+		System.out.println(Thread.currentThread().getName());
 	}
 	
 	@EventListener
 	@Async
 	public void notifyClient(ClientSaveEvent event) {
 		System.out.println("Nofication sent to client "+event.getEmailid());
+		System.out.println(Thread.currentThread().getName());
 	}
 	
 	@EventListener
 	@Async
 	public void auditAddClient(ClientSaveEvent event) {
 		System.out.println("Audit table updated "+event.getEmailid());
+		System.out.println(Thread.currentThread().getName());
 	}
 }

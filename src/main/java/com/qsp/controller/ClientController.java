@@ -42,13 +42,21 @@ public class ClientController {
 	}
 	
 	@PostMapping
-	public String veryfyClient(@RequestBody ClientSaveDto dto) {
-		return mailservice.sentOtp(dto.getEmail(), dto);
+	public ResponseEntity<ResponseStructure> veryfyClient(@RequestBody ClientSaveDto dto) {
+		
+		return responseEntityMapper.getResponseEntity(responseStructuremapper
+				.mapToResponseStructure(HttpStatus.OK,"String"
+				, mailservice.sentOtp(dto.getEmail(), dto))
+				, HttpStatus.OK);
 	}
 	
 	@PostMapping("/{email}/{otp}")
-	public String saveClient(@PathVariable("email") String email
+	public ResponseEntity<ResponseStructure> saveClient
+	                                          (@PathVariable("email") String email
 			                    ,@PathVariable("otp") String otp) {
-		return mailservice.validateOtp(email, otp);
+		ResponseStructure structure=responseStructuremapper
+				.mapToResponseStructure(HttpStatus.CREATED,"String"
+				, mailservice.validateOtp(email, otp));
+		return responseEntityMapper.getResponseEntity(structure,HttpStatus.CREATED);
 	}
 }

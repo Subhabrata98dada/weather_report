@@ -77,8 +77,12 @@ public class WeatherController {
 	
 	@DeleteMapping("/{id}")
 	@Operation(summary = "Delete data as per given id as input")
-	public String deleteWeather(@PathVariable("id") Integer id) {
-		return weatherservice.deleteWeatherService(id);
+	public ResponseEntity<ResponseStructure> deleteWeather(@PathVariable("id") Integer id) {
+		String service= weatherservice.deleteWeatherService(id);
+		ResponseStructure structure= responseStructureMapper
+				.mapToResponseStructure(HttpStatus.OK,"string", service);
+		return responseEntityMapper
+				.getResponseEntity(structure,HttpStatus.OK);
 	}
 	
 	@GetMapping("/page")
