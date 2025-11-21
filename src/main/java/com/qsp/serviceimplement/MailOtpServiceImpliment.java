@@ -44,7 +44,7 @@ public class MailOtpServiceImpliment implements MailOtpService{
 			SimpleMailMessage message = new SimpleMailMessage();
 	        message.setFrom("testsubhabrata736@gmail.com");
 	        message.setTo(emailid);
-	        message.setSubject("OTP");
+	        message.setSubject("OTP alert from weather app");
 	        message.setText("OTP for gmail verification : "+otp);
 	        mailSender.send(message);
 			return "Otp sent to email :"+emailid;
