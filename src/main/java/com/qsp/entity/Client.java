@@ -1,15 +1,17 @@
 package com.qsp.entity;
 
-import java.time.LocalDate;
+
 import java.time.LocalDateTime;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.qsp.util.ClientType;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
@@ -24,6 +26,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Setter
 @Getter
 @AllArgsConstructor
@@ -48,9 +51,10 @@ public class Client {
 	private Boolean active;
 	
 	@CreatedDate
-	@Column(updatable = false)
+	@Column(updatable = false,nullable = false)
 	private LocalDateTime createdon;
 	
 	@LastModifiedDate
+	@Column(nullable = false)
 	private LocalDateTime lastupdate;
 }

@@ -12,8 +12,11 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import com.qsp.entity.Audit;
+import com.qsp.entity.Client;
 import com.qsp.event.ClientSaveEvent;
+import com.qsp.modelmapper.ClientMapper;
 import com.qsp.repository.AuditRepository;
+import com.qsp.repository.ClientRepostiry;
 import com.qsp.requestdto.ClientSaveDto;
 
 @Component
@@ -28,6 +31,12 @@ public class AddClientListener {
 	
 	@Autowired
 	private AuditRepository auditrepo;
+	
+	@Autowired
+	private ClientRepostiry clientrepo;
+	
+	@Autowired
+	private ClientMapper clientMapper;
 	
 	@EventListener
 	@Async
@@ -48,8 +57,11 @@ public class AddClientListener {
 	@EventListener
 	@Async
 	public void addClient(ClientSaveEvent event) {
-		System.out.println("Nofication sent to client "+event.getEmailid());
-		System.out.println(Thread.currentThread().getName());
+		Object objects[]=otpholder.get(event.getEmailid());
+		ClientSaveDto dto=(ClientSaveDto)objects[0];
+		Client client=clientMapper.
+				clientSaveDtoToClient(dto, new Client());
+		clientrepo.save(client);
 	}
 	
 	@EventListener
@@ -61,7 +73,7 @@ public class AddClientListener {
 		.action("REGISTER")
 		.message("New user subscribed")
 		.build();
-//		 auditrepo.save(audit);
+		 auditrepo.save(audit);
 	}
 	
 }
