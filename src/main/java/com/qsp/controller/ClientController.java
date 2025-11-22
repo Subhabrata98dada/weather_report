@@ -13,7 +13,7 @@ import com.qsp.modelmapper.ResponseEntityMapper;
 import com.qsp.modelmapper.ResponseStructuremodelMapper;
 import com.qsp.requestdto.ClientSaveDto;
 import com.qsp.responsedto.ResponseStructure;
-import com.qsp.service.MailOtpService;
+import com.qsp.service.ClientService;
 import com.qsp.util.ClientType;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,7 +30,7 @@ public class ClientController {
 	
 	private final ResponseEntityMapper responseEntityMapper;
 	
-	private final MailOtpService mailservice;
+	private final ClientService clientService;
 	
 	@GetMapping("/registerpre")
 	@Operation(description = "return all user type before add new user")
@@ -46,7 +46,7 @@ public class ClientController {
 		
 		return responseEntityMapper.getResponseEntity(responseStructuremapper
 				.mapToResponseStructure(HttpStatus.OK,"String"
-				, mailservice.sentOtp(dto.getEmail(), dto))
+				, clientService.sendOtpRegister(dto))
 				, HttpStatus.OK);
 	}
 	
@@ -56,7 +56,7 @@ public class ClientController {
 			                    ,@PathVariable("otp") String otp) {
 		ResponseStructure structure=responseStructuremapper
 				.mapToResponseStructure(HttpStatus.CREATED,"String"
-				, mailservice.validateOtp(email, otp));
+				, clientService.validateOtpRegister(email, otp));
 		return responseEntityMapper.getResponseEntity(structure,HttpStatus.CREATED);
 	}
 }

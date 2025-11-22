@@ -14,28 +14,35 @@ import com.qsp.responsedto.ResponseStructure;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-	
+
 	@Autowired
 	private ResponseStructuremodelMapper reponseStructuremapper;
-	
+
 	@Autowired
 	private ResponseEntityMapper responseEntityMapper;
-	
+
 	@ExceptionHandler(NoSuchElementException.class)
-	public ResponseEntity<ResponseStructure> handleNoSuchElementException
-	                                                 (NoSuchElementException ex){
-		ResponseStructure structure=reponseStructuremapper.
-				mapToResponseStructure(HttpStatus.NOT_FOUND,"string",ex.getMessage());
+	public ResponseEntity<ResponseStructure> handleNoSuchElementException(NoSuchElementException ex) {
+		ResponseStructure structure = reponseStructuremapper.mapToResponseStructure(HttpStatus.NOT_FOUND, "string",
+				ex.getMessage());
 		structure.setStatus(false);
-		return responseEntityMapper.getResponseEntity(structure,HttpStatus.NOT_FOUND);
+		return responseEntityMapper.getResponseEntity(structure, HttpStatus.NOT_FOUND);
 	}
-	
+
 	@ExceptionHandler(AddClientException.class)
-	public ResponseEntity<ResponseStructure> handleAddclientException
-	                                      (AddClientException ex){
-		ResponseStructure structure=reponseStructuremapper
-	    .mapToResponseStructure(HttpStatus.INTERNAL_SERVER_ERROR,"string",ex.getMessage());
+	public ResponseEntity<ResponseStructure> handleAddclientException(AddClientException ex) {
+		ResponseStructure structure = reponseStructuremapper.mapToResponseStructure(HttpStatus.INTERNAL_SERVER_ERROR,
+				"string", ex.getMessage());
 		structure.setStatus(false);
-		return responseEntityMapper.getResponseEntity(structure,HttpStatus.INTERNAL_SERVER_ERROR);
+		return responseEntityMapper.getResponseEntity(structure, HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+
+	
+	@ExceptionHandler(EmailOtpException.class)
+	public ResponseEntity<ResponseStructure> handleEmailOtpException(EmailOtpException ex){
+		ResponseStructure structure = reponseStructuremapper.mapToResponseStructure(HttpStatus.INTERNAL_SERVER_ERROR,
+				"string", ex.getMessage());
+		structure.setStatus(false);
+		return responseEntityMapper.getResponseEntity(structure, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 }

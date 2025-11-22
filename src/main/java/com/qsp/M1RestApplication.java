@@ -6,23 +6,20 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.servers.Server;
+
 @SpringBootApplication
-@OpenAPIDefinition(info = @Info(title = "M1_REST_API"
-                          ,description = "Demo learning project"
-                          ,version = "1.2"),
-                   servers = {
-                		   @Server(url = "http://localhost:8080",
-                				   description = "local dev server")
-                   }
-)
+@OpenAPIDefinition(info = @Info(title = "M1_REST_API", description = "Demo learning project", version = "1.2"), servers = {
+		@Server(url = "http://localhost:8080", description = "local dev server") })
 @EnableAspectJAutoProxy
 @EnableCaching
 @EnableJpaAuditing
 @EnableAsync
+@EnableScheduling
 public class M1RestApplication {
 
 	public static void main(String[] args) {

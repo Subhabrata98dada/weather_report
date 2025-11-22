@@ -1,5 +1,7 @@
 package com.qsp.event;
 
+import com.qsp.requestdto.ClientSaveDto;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,5 +12,5 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ClientSaveEvent {
-	private String emailid;
+	private ClientSaveDto dto;
 }

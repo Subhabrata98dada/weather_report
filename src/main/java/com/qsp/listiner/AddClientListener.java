@@ -21,59 +21,51 @@ import com.qsp.requestdto.ClientSaveDto;
 
 @Component
 public class AddClientListener {
-	
+
 	@Autowired
 	private JavaMailSender mailsender;
-	
+
 	@Autowired
 	@Qualifier("otpholder")
-	private Map<String,Object[]> otpholder;
-	
+	private Map<String, Object[]> otpholder;
+
 	@Autowired
 	private AuditRepository auditrepo;
-	
+
 	@Autowired
 	private ClientRepostiry clientrepo;
-	
+
 	@Autowired
 	private ClientMapper clientMapper;
-	
+
 	@EventListener
 	@Async
 	public void notifyClient(ClientSaveEvent event) {
 		SimpleMailMessage message = new SimpleMailMessage();
-		Object object[]=otpholder.get(event.getEmailid());
-		String name=((ClientSaveDto)object[0]).getName();
-        message.setFrom("testsubhabrata736@gmail.com");
-        message.setTo(event.getEmailid());
-        message.setSubject("Weather app alert");
-        StringBuilder builder=new StringBuilder();
-        builder.append("Dear "+ name+"\n Thanks for your subscription to "
-        		+ "Jhatka_weather service");
-        message.setText(builder.toString());
-        mailsender.send(message);
+		String name = event.getDto().getName();
+		message.setFrom("testsubhabrata736@gmail.com");
+		message.setTo(event.getDto().getEmail());
+		message.setSubject("Weather app alert");
+		StringBuilder builder = new StringBuilder();
+		builder.append("Dear " + name + "\n Thanks for your subscription to " + "Jhatka_weather service");
+		message.setText(builder.toString());
+		mailsender.send(message);
 	}
-	
+
 	@EventListener
 	@Async
 	public void addClient(ClientSaveEvent event) {
-		Object objects[]=otpholder.get(event.getEmailid());
-		ClientSaveDto dto=(ClientSaveDto)objects[0];
-		Client client=clientMapper.
-				clientSaveDtoToClient(dto, new Client());
+		ClientSaveDto dto = event.getDto();
+		Client client = clientMapper.clientSaveDtoToClient(dto, new Client());
 		clientrepo.save(client);
 	}
-	
+
 	@EventListener
 	@Async
 	public void auditAddClient(ClientSaveEvent event) {
-		 Audit audit= Audit.builder()
-		.auditid(UUID.randomUUID().toString())
-		.user(event.getEmailid())
-		.action("REGISTER")
-		.message("New user subscribed")
-		.build();
-		 auditrepo.save(audit);
+		Audit audit = Audit.builder().auditid(UUID.randomUUID().toString()).user(event.getDto().getEmail())
+				.action("REGISTER").message("New user subscribed").build();
+		auditrepo.save(audit);
 	}
-	
+
 }
