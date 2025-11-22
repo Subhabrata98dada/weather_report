@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.qsp.event.ClientSaveEvent;
 import com.qsp.exceptionhandling.AddClientException;
+import com.qsp.repository.ClientRepostiry;
 import com.qsp.requestdto.ClientSaveDto;
 import com.qsp.service.MailOtpService;
 
@@ -33,10 +34,16 @@ public class MailOtpServiceImpliment implements MailOtpService{
 	
 	@Autowired
     private JavaMailSender mailSender;
+	
+	@Autowired
+	private ClientRepostiry clientrepo;
 
 	@Override
 	public String sentOtp(String emailid,ClientSaveDto dto) {
-		
+		emailid=emailid.trim();
+		if(clientrepo.existsByEmail(emailid))
+			throw new AddClientException("Email already exist for "
+					+ "weather report");
 		try {
 			Integer otp=random.nextInt(100000,999999);
 			Object value[]= {dto,otp+"",LocalDateTime.now().plusMinutes(3)};

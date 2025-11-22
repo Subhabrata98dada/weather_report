@@ -15,4 +15,5 @@ public class ClientSaveDto {
 	private String name;
 	private String email;
 	private Integer usertype;
+	private String phonenumber;
 }
