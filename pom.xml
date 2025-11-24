@@ -76,16 +76,13 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-<<<<<<< HEAD
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
-	</dependencies>
-
-=======
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
-	    </dependencies>
->>>>>>> master
+	</dependencies>
 	<build>
 		<plugins>
 			<plugin>
