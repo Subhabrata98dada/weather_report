@@ -8,9 +8,6 @@ import org.springframework.stereotype.Service;
 
 import com.qsp.repository.UserDetailsRepository;
 
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-
 @Service
 public class CustomUserDetailsService implements UserDetailsService{
 
