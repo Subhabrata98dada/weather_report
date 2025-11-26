@@ -5,6 +5,7 @@ import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -44,5 +45,12 @@ public class GlobalExceptionHandler {
 				"string", ex.getMessage());
 		structure.setStatus(false);
 		return responseEntityMapper.getResponseEntity(structure, HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	@ExceptionHandler(BadCredentialsException.class)
+	public ResponseEntity<ResponseStructure> handleBadCrediantialException(BadCredentialsException ex){
+		ResponseStructure structure=reponseStructuremapper
+				.mapToResponseStructure(HttpStatus.UNAUTHORIZED,"string",ex.getMessage());
+		return responseEntityMapper.getResponseEntity(structure,HttpStatus.UNAUTHORIZED);
 	}
 }
